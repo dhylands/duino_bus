@@ -4,7 +4,7 @@
 
 import unittest
 
-from DuinoBus.dump_mem import dump_mem
+from duino_bus.dump_mem import dump_mem
 
 PREFIX = '    Prefix'
 

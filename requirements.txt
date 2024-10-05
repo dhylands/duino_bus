@@ -1,3 +1,5 @@
+coverage
+crcmod
 pylint
 pyserial
 pytest==8.2.2

@@ -1,26 +1,12 @@
-PYTHON_FILES = $(shell find . -name '*.py' -not -path  './.direnv/*' -not -path './tests/*')
+# DunioBus makefile
 
-.PHONY: style
-style:
-	yapf -i $(PYTHON_FILES)
+THIS_DIR := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
+TOP_DIR ?= $(THIS_DIR)
 
-.PHONY: lint
-lint:
-	pylint $(PYTHON_FILES)
+DUINO_MAKEFILE ?= $(THIS_DIR)/../duino_makefile
 
-# Install any required python tools and modules
-.PHONY: requirements
-requirements:
-	python3 -m pip install --upgrade pip
-	pip3 install -r requirements.txt
-
-# Run tests
-.PHONY: test
-test:
-	python -m pytest -vv
-
-# Do coverage analysis and print a report
-.PHONY: coverage
-coverage:
-	coverage run -m pytest
-	coverage report -m
+ifeq ("$(wildcard $(DUINO_MAKEFILE)/Makefile)","")
+$(error Unable to open $(DUINO_MAKEFILE)/Makefile)
+else
+include $(DUINO_MAKEFILE)/Makefile
+endif
