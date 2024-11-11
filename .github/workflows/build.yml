@@ -51,3 +51,6 @@ jobs:
 
     - name: Install python tools
       run: make BOARD=pico install-python-tools
+
+    - name: Run python tools
+      run: make BOARD=pico run-python-tools
