@@ -48,3 +48,6 @@ jobs:
 
     - name: Make sure all of the examples compile
       run: make BOARD=pico compile-examples
+
+    - name: Install python tools
+      run: make BOARD=pico install-python-tools
