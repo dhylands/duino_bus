@@ -14,9 +14,16 @@ jobs:
 
     # Checkout the repository
 
+    - name: Checkout duino_littlefs
+      uses: actions/checkout@v4
+      with:
+        repository: dhylands/duino_littlefs
+        path: libraries/duino_littlefs
+
     - name: Checkout duino_bus
       uses: actions/checkout@v4
       with:
+        repository: dhylands/duino_bus
         path: libraries/duino_bus
 
     - name: Checkout duino_log
