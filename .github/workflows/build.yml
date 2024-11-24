@@ -1,4 +1,4 @@
-name: Build Actions for duino_bus
+name: Build duino_bus
 
 on: [push, pull_request]
 

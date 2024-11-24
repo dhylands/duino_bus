@@ -4,7 +4,6 @@
 """
 
 import logging
-import os
 import select
 import socket
 import time
@@ -23,7 +22,7 @@ class SocketBus(IBus):
 
     def __init__(self):
         super().__init__()
-        self.socket = None
+        self.socket: Union[None, socket.socket] = socket.socket()
 
     def print_addr_info(self, label: str, info: Tuple) -> None:
         """Prints information from a single info entry returned by getaddrinfo."""
@@ -38,15 +37,16 @@ class SocketBus(IBus):
 
         LOGGER.info('%s IPv%s [%s]:%d', label, family_str, sockaddr[0], sockaddr[1])
 
-    def make_socket_non_blocking(self, skt: socket) -> ErrorCode:
+    def make_socket_non_blocking(self, skt: socket.socket) -> int:
         """Makes the socket non-blocking."""
         skt.setblocking(False)
         return ErrorCode.NONE
 
-    def connect_to_server(self, host: str, port: str) -> ErrorCode:
+    def connect_to_server(self, host: str, port: str) -> int:
         """Tries to connect to the indicated server."""
         addrinfo = socket.getaddrinfo(host, port, family=socket.AF_UNSPEC, type=socket.SOCK_STREAM)
         connected = False
+        server_skt = None
         info = None
         for info in addrinfo:
             self.print_addr_info('Trying', info)
@@ -61,7 +61,7 @@ class SocketBus(IBus):
                 # We didn't connect, try the next entry
                 server_skt.close()
                 continue
-        if not connected:
+        if not connected or server_skt is None or info is None:
             LOGGER.error("No IP Address found for connecting")
             return ErrorCode.OS
 
@@ -76,6 +76,8 @@ class SocketBus(IBus):
 
     def enable_keepalive(self):
         """Enables keep alive packets so we get notified quicker when the other end goes away."""
+        if self.socket is None:
+            return
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
         # Set the amount of idle time before a keep alive is sent
         self.socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPIDLE, 1)
@@ -86,6 +88,8 @@ class SocketBus(IBus):
 
     def is_data_available(self) -> bool:
         """Returns True if data is available, False otherwise."""
+        if self.socket is None:
+            raise ValueError('Attempting I/O operation on a closed socket')
         poll = select.poll()
         poll.register(self.socket, select.POLLIN)
         events = poll.poll(0)
@@ -93,6 +97,8 @@ class SocketBus(IBus):
 
     def is_space_available(self) -> bool:
         """Returns Trus if space is available to write another byte, False otherwise."""
+        if self.socket is None:
+            raise ValueError('Attempting I/O operation on a closed socket')
         poll = select.poll()
         poll.register(self.socket, select.POLLOUT)
         events = poll.poll(0)
@@ -102,6 +108,8 @@ class SocketBus(IBus):
         """Reads a byte from the bus. This function is non-blocking.
            Returns None if no character was available to be read, or the character.
         """
+        if self.socket is None:
+            raise ValueError('Attempting I/O operation on a closed socket')
         data = self.socket.recv(1)
         if data:
             return data[0]
@@ -109,6 +117,8 @@ class SocketBus(IBus):
 
     def write_byte(self, byte: int) -> None:
         """Writes a byte to the bus."""
+        if self.socket is None:
+            raise ValueError('Attempting I/O operation on a closed socket')
         self.socket.send(byte.to_bytes(1, 'little'))
 
 

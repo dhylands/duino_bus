@@ -43,8 +43,6 @@ setup(
                 'Topic :: Terminals :: Serial',
                 'Topic :: Utilities',
         ],
-        install_requires=[
-                'crcmod',
-                'pyserial'
-        ],
+        install_requires=['crcmod',
+                          'pyserial'],
 )
