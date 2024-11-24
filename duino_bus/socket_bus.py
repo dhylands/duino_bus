@@ -3,7 +3,6 @@
    a serial like interface using a socket server.
 """
 
-from fcntl import fcntl, F_GETFL, F_SETFL
 import logging
 import os
 import select
@@ -41,12 +40,7 @@ class SocketBus(IBus):
 
     def make_socket_non_blocking(self, skt: socket) -> ErrorCode:
         """Makes the socket non-blocking."""
-        flags = fcntl(skt, F_GETFL) | os.O_NONBLOCK
-        try:
-            fcntl(skt, F_SETFL, flags)
-        except OSError as err:
-            LOGGER.error('fcntl failed to make socket non-blocking: %s', err)
-            return ErrorCode.OS
+        skt.setblocking(False)
         return ErrorCode.NONE
 
     def connect_to_server(self, host: str, port: str) -> ErrorCode:

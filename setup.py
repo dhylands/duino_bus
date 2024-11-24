@@ -44,7 +44,7 @@ setup(
                 'Topic :: Utilities',
         ],
         install_requires=[
-                'pyserial',
                 'crcmod',
+                'pyserial'
         ],
 )
