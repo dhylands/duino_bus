@@ -30,3 +30,9 @@ class TestUnPacker(unittest.TestCase):
         self.assertEqual(unpacker.unpack_u16(), 0x1122)
         self.assertEqual(unpacker.unpack_u32(), 0x11223344)
         self.assertEqual(unpacker.unpack_str(), 'ABC')
+
+    def test_unpack_more_data(self) -> None:
+        unpacker = Unpacker(b'A')
+        self.assertTrue(unpacker.more_data())
+        self.assertEqual(unpacker.unpack_u8(), 0x41)
+        self.assertFalse(unpacker.more_data())

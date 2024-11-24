@@ -18,5 +18,7 @@
 
 #include <Arduino.h>
 
+#include "duino_util.h"
+
 void setup() {}
 void loop() {}

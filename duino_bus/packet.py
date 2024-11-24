@@ -54,11 +54,15 @@ class Packet:
 
     def __init__(self, cmd: Union[int, None] = None, data: Union[ByteString, None] = None) -> None:
         """Constructs a packet from a buffer, if provided."""
+        if cmd is None:
+            cmd = 0
         self.cmd = cmd
-        if data is None:
-            self.data = bytearray()
-        else:
+        if isinstance(data, bytearray):
             self.data = data
+        else:
+            self.data: bytearray = bytearray()
+            if data is not None:
+                self.data.extend(data)
         self.crc = 0
 
     def dump(self, label: str) -> None:
@@ -72,7 +76,7 @@ class Packet:
         if len(self.data) > 0:
             dump_mem(self.data, label)
 
-    def get_command(self) -> int:
+    def get_command(self) -> Union[int, None]:
         """Returns the command from the packet."""
         return self.cmd
 
@@ -86,7 +90,7 @@ class Packet:
 
     def get_data(self) -> bytearray:
         """Returns the data portion of the packet."""
-        return self.data
+        return bytearray(self.data)
 
     def get_data_byte(self, idx: int) -> int:
         """Returns one byte of the packet data."""
@@ -94,7 +98,10 @@ class Packet:
 
     def set_data(self, data: Union[bytes, bytearray]) -> None:
         """Sets the packet data."""
-        self.data = data
+        if isinstance(data, bytearray):
+            self.data = data
+        else:
+            self.data = bytearray(data)
 
     def append_byte(self, byte: int) -> None:
         """Appends a byte to the packet data."""

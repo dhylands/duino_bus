@@ -3,7 +3,6 @@
 # This file tests the packet parser
 
 import unittest
-import binascii
 
 from duino_bus.dump_mem import dump_mem
 from duino_bus.packet import ERROR_STRS, ErrorCode, Packet
@@ -26,6 +25,13 @@ class TestPacket(unittest.TestCase):
         self.assertEqual(ErrorCode.as_str(255), '???')
 
         self.assertEqual(len(ERROR_STRS), 8)
+
+    def test_set_data(self) -> None:
+        pkt = Packet(0xcc)
+        pkt.set_data(b'123')
+        self.assertEqual(pkt.get_command(), 0xcc)
+        self.assertEqual(pkt.get_data(), b'123')
+
 
 if __name__ == '__main__':
     unittest.main()

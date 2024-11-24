@@ -50,3 +50,8 @@ class TestPacker(unittest.TestCase):
         packer.pack_u16(0x1122)
         self.assertEqual(data, b'\x22\x11')
 
+    def test_pack_with_data2(self):
+        pkt = Packet(1, b'AB')
+        packer = Packer(pkt)
+        packer.pack_u16(0x1122)
+        self.assertEqual(pkt.get_data(), b'\x41\x42\x22\x11')
