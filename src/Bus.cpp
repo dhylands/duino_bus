@@ -14,9 +14,9 @@
  *
  ****************************************************************************/
 
-#include "Bus.h"
-#include "Log.h"
-#include "PacketHandler.h"
+#include "duino_bus/Bus.h"
+#include "duino_bus/PacketHandler.h"
+#include "duino_log/Log.h"
 
 IBus::IBus(
     Packet* cmdPacket,  //!< [mod] Place to store the command packet.
@@ -40,6 +40,7 @@ Packet::Error IBus::writePacket(Packet* packet) {
         err = this->m_encoder.encodeByte(&byte);
         this->writeByte(byte);
     }
+    this->flush();
     return err;
 }
 

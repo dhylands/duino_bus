@@ -16,4 +16,4 @@
 
 #pragma once
 
-#include "src/duino_bus.h"
+#include "duino_bus/duino_bus.h"

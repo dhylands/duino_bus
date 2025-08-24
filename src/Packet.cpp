@@ -14,16 +14,16 @@
  *
  ****************************************************************************/
 
-#include "Packet.h"
+#include "duino_bus/Packet.h"
 
 #include <algorithm>
 #include <cassert>
 #include <cinttypes>
 #include <memory>
 
-#include "Crc8.h"
-#include "DumpMem.h"
-#include "Log.h"
+#include "duino_log/Log.h"
+#include "duino_log/DumpMem.h"
+#include "duino_util/Crc8.h"
 
 char const* as_str(Packet::Error err) {
     switch (err) {

@@ -22,7 +22,7 @@
 
 #include <cinttypes>
 
-#include "Bus.h"
+#include "duino_bus/Bus.h"
 
 //! Implements a bus using TCP/IP sockets.
 class SocketBus : public IBus {

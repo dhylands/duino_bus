@@ -8,38 +8,37 @@
  *
  ****************************************************************************/
 /**
- *   @file   ArduinoSerialBus.h
+ *   @file   PicoUsbBus.h
  *
- *   @brief  Implements a bus for sending packets via an Arduino serial port.
+ *   @brief  Implements a bus for sending packets via an Pico USB port.
  *
  ****************************************************************************/
 
 #pragma once
 
-#include <Arduino.h>
-
 #include <cinttypes>
 
-#include "Bus.h"
+#include "duino_bus/Bus.h"
 
 //! Implements a bus using an Arduino Serial port.
-class ArduinoSerialBus : public IBus {
+class PicoUsbBus : public IBus {
  public:
     //! Constructor.
-    ArduinoSerialBus(
-        HardwareSerial* serial,  //!< [in] Serial port to use.
-        Packet* cmdPacket,       //!< [in] Place to store command packet
-        Packet* rspPacket        //!< [in] Place to store response packet
+    PicoUsbBus(
+        uint8_t intf,       //!< [in] USB Interface to use.
+        Packet* cmdPacket,  //!< [in] Place to store command packet
+        Packet* rspPacket   //!< [in] Place to store response packet
     );
 
     //! Destructor.
-    ~ArduinoSerialBus() override;
+    ~PicoUsbBus() override;
 
     bool isDataAvailable() const override;
     bool readByte(uint8_t* byte) override;
     bool isSpaceAvailable() const override;
     void writeByte(uint8_t byte) override;
+    void flush(void) override;
 
  private:
-    HardwareSerial* const m_serial;  //!< Serial port to use.
+    uint8_t const m_intf;  //!< USB Interface to use.
 };

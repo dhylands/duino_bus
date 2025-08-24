@@ -26,7 +26,7 @@
 #include <cerrno>
 #include <cstdio>
 
-#include "Log.h"
+#include "duino_log/Log.h"
 
 LinuxSerialBus::LinuxSerialBus(Packet* cmdPacket, Packet* rspPacket) : IBus{cmdPacket, rspPacket} {}
 

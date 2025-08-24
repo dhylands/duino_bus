@@ -16,7 +16,7 @@
 
 #if !defined(ARDUINO)
 
-#include "SocketBus.h"
+#include "duino_bus/SocketBus.h"
 
 #include <arpa/inet.h>
 #include <errno.h>
@@ -30,7 +30,7 @@
 
 #include <memory>
 
-#include "Log.h"
+#include "duino_log/Log.h"
 #include "ScopeGuard.h"
 
 SocketBus::SocketBus(Packet* cmdPacket, Packet* rspPacket) : IBus{cmdPacket, rspPacket} {}

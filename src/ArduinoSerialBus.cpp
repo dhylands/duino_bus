@@ -14,7 +14,7 @@
  *
  ****************************************************************************/
 
-#include "ArduinoSerialBus.h"
+#include "duino_bus/ArduinoSerialBus.h"
 
 ArduinoSerialBus::ArduinoSerialBus(HardwareSerial* serial, Packet* cmdPacket, Packet* rspPacket)
     : IBus{cmdPacket, rspPacket}, m_serial{serial} {}

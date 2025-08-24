@@ -16,9 +16,9 @@
 
 #pragma once
 
-#include "Bus.h"
-#include "CorePacketHandler.h"
-#include "Packet.h"
-#include "PacketDecoder.h"
-#include "PacketEncoder.h"
-#include "SocketBus.h"
+#include "duino_bus/Bus.h"
+#include "duino_bus/CorePacketHandler.h"
+#include "duino_bus/Packet.h"
+#include "duino_bus/PacketDecoder.h"
+#include "duino_bus/PacketEncoder.h"
+#include "duino_bus/SocketBus.h"

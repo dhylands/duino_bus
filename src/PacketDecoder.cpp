@@ -14,16 +14,16 @@
  *
  ****************************************************************************/
 
-#include "PacketDecoder.h"
+#include "duino_bus/PacketDecoder.h"
 
 #include <algorithm>
 #include <cassert>
 #include <cinttypes>
 #include <memory>
 
-#include "Crc8.h"
-#include "DumpMem.h"
-#include "Log.h"
+#include "duino_log/DumpMem.h"
+#include "duino_log/Log.h"
+#include "duino_util/Crc8.h"
 
 PacketDecoder::PacketDecoder(Packet* pkt) : m_packet{pkt} {}
 

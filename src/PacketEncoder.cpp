@@ -14,17 +14,17 @@
  *
  ****************************************************************************/
 
-#include "Packet.h"
+#include "duino_bus/PacketEncoder.h"
 
 #include <algorithm>
 #include <cassert>
 #include <cinttypes>
 #include <memory>
 
-#include "Crc8.h"
-#include "DumpMem.h"
-#include "Log.h"
-#include "PacketEncoder.h"
+#include "duino_bus/Packet.h"
+#include "duino_log/DumpMem.h"
+#include "duino_log/Log.h"
+#include "duino_util/Util.h"
 
 void PacketEncoder::encodeStart(Packet* packet) {
     packet->calcAndStoreCrc();

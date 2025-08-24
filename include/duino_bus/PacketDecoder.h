@@ -19,8 +19,8 @@
 #include <cstdint>
 #include <initializer_list>
 
-#include "duino_util.h"
-#include "Packet.h"
+#include "duino_bus/Packet.h"
+#include "duino_util/Util.h"
 
 //! Forward declaration.
 //@{

@@ -14,7 +14,7 @@
  *
  ****************************************************************************/
 
-#include "CorePacketHandler.h"
+#include "duino_bus/CorePacketHandler.h"
 
 char const* CorePacketHandler::as_str(Packet::Command::Type cmd) const {
     switch (cmd) {

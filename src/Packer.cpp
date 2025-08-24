@@ -16,7 +16,7 @@
 
 #include <algorithm>
 
-#include "Packer.h"
+#include "duino_bus/Packer.h"
 
 Packer::Packer(Packet* packet) : m_packet(packet) {}
 

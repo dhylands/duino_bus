@@ -19,9 +19,9 @@
 #include <cinttypes>
 #include <vector>
 
-#include "Packet.h"
-#include "PacketDecoder.h"
-#include "PacketEncoder.h"
+#include "duino_bus/Packet.h"
+#include "duino_bus/PacketDecoder.h"
+#include "duino_bus/PacketEncoder.h"
 
 class IPacketHandler;  //!< Forward reference
 
@@ -55,6 +55,9 @@ class IBus {
     //! Writes a byte to the bus.
     virtual void writeByte(uint8_t byte  //!< [in] byte to write.
                            ) = 0;
+
+    //! Flushes any buffered data out.
+    virtual void flush(void) {}
 
     //! Reads a byte from the bus, and runs it through the packet parser.
     //! @returns Error::NONE if the packet was parsed successfully.
