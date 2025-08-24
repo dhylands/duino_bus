@@ -46,15 +46,17 @@ class IBus {
     //! Reads a byte from the bus (or other virtual device).
     //! This function is non-blocking.
     //! @returns true if a byte was read, false otherwise.
-    virtual bool readByte(uint8_t* byte  //!< [out] Place to store byte that was read.
-                          ) = 0;
+    virtual bool readByte(
+        uint8_t* byte  //!< [out] Place to store byte that was read.
+        ) = 0;
 
     //! @returns true if space is available to write another byte, false otherwise.
     virtual bool isSpaceAvailable() const = 0;
 
     //! Writes a byte to the bus.
-    virtual void writeByte(uint8_t byte  //!< [in] byte to write.
-                           ) = 0;
+    virtual void writeByte(
+        uint8_t byte  //!< [in] byte to write.
+        ) = 0;
 
     //! Flushes any buffered data out.
     virtual void flush(void) {}
@@ -68,18 +70,21 @@ class IBus {
 
     //! Writes a packet on this bus.
     //! @returns Error::NONE if the packet was written successfully, or an error code otherwise.
-    Error writePacket(Packet* packet  //!< [in] Packet to write.
+    Error writePacket(
+        Packet* packet  //!< [in] Packet to write.
     );
 
     //! Sets the debug flag which controls whether decoded packets get dumped.
-    void setDebug(bool debug  //!< [in] Value to set debug flag to.
+    void setDebug(
+        bool debug  //!< [in] Value to set debug flag to.
     ) {
         this->m_decoder.setDebug(debug);
         this->m_encoder.setDebug(debug);
     }
 
     //! Adds a packet handler.
-    void add(IPacketHandler& handler  //!< Packet handler to add.
+    void add(
+        IPacketHandler& handler  //!< Packet handler to add.
     );
 
     //! Runs the received packet through the registered handlers.

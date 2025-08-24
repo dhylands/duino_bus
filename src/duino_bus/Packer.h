@@ -25,14 +25,16 @@
 class Packer {
  public:
     //! Constructor.
-    explicit Packer(Packet* packet  //!< [mod] Packet to pack into.
+    explicit Packer(
+        Packet* packet  //!< [mod] Packet to pack into.
     );
 
     //! Pack a simple type.
     //! @tparam T type of value to pack.
     //! @returns true if the data was packed successfully, false otherwise.
     template <typename T>
-    bool pack(T const& data  //!< [in] Data to pack.
+    bool pack(
+        T const& data  //!< [in] Data to pack.
     ) {
         // Produce an error if somebody tries to pass a pointer.
         static_assert(!std::is_pointer_v<T>);
@@ -46,7 +48,8 @@ class Packer {
 
     //! Packs a string.
     //! @returns true if the string was packed successfully, false otherwise.
-    bool pack(char const* str  //!< [in] String to append.
+    bool pack(
+        char const* str  //!< [in] String to append.
     );
 
  private:

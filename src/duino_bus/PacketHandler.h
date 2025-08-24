@@ -31,6 +31,17 @@ class IPacketHandler {
 
     //! Converts a command into it's string representation.
     //! @returns a pointer to literal string.
-    virtual char const* as_str(Packet::Command::Type cmd  //!< The command tp lookup.
+    virtual char const* as_str(
+        Packet::Command::Type cmd  //!< The command tp lookup.
     ) const = 0;
+
+    //! Sets the bus that thiss packet handler is associated with.
+    void setBus(
+        IBus* bus  //!< [in] Bus this handler is associated with.
+    ) {
+        this->m_bus = bus;
+    }
+
+ protected:
+    IBus* m_bus = nullptr;  //!< Bus this handler is associated with.
 };

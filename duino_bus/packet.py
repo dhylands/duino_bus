@@ -2,7 +2,7 @@
 This module defines Packet class.
 """
 
-from typing import ByteString, Union
+from typing import Union
 import crcmod
 
 from duino_bus.dump_mem import dump_mem
@@ -52,7 +52,14 @@ class Packet:
 
     CRC_FN = crcmod.predefined.mkCrcFun('crc-8')
 
-    def __init__(self, cmd: Union[int, None] = None, data: Union[ByteString, None] = None) -> None:
+    def __init__(
+            self,
+            cmd: Union[int,
+                       None] = None,
+            data: Union[bytes,
+                        bytearray,
+                        None] = None
+    ) -> None:
         """Constructs a packet from a buffer, if provided."""
         if cmd is None:
             cmd = 0

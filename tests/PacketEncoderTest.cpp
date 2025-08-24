@@ -16,12 +16,12 @@
 
 #include <gtest/gtest.h>
 
-#include "AsciiHex.h"
-#include "Crc8.h"
-#include "DumpMem.h"
-#include "LinuxColorLog.h"
-#include "PacketEncoder.h"
-#include "Util.h"
+#include "duino_log/DumpMem.h"
+#include "duino_bus/PacketEncoder.h"
+#include "duino_log/LinuxColorLog.h"
+#include "duino_util/AsciiHex.h"
+#include "duino_util/Crc8.h"
+#include "duino_util/Util.h"
 
 using Command = Packet::Command;
 using Error = Packet::Error;
@@ -50,8 +50,9 @@ class PacketEncoderTest {
 
     //! Tests if the encoded packet matches the given ascii hex data.
     //! @returns true if the encoded packet matches, false otherwise.
-    bool matches(char const* expectedAsciiHexData  //!< [in] ASCII Hex data that should match the
-                                                   //!< encoded packet.
+    bool matches(
+        char const* expectedAsciiHexData  //!< [in] ASCII Hex data that should match the
+                                          //!< encoded packet.
     ) {
         auto expectedData = AsciiHexToBinary(expectedAsciiHexData);
         if (expectedData != this->m_encodedData) {

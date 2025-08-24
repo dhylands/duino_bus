@@ -16,14 +16,15 @@
 
 #include <gtest/gtest.h>
 
-#include "CorePacketHandler.h"
-#include "Packet.h"
+#include "duino_bus/CorePacketHandler.h"
+#include "duino_bus/Packet.h"
 
 using Command = Packet::Command;  //!< Convenience alias
 using Error = Packet::Error;      //!< Convenience alias
 
 //! Test data used by individual tests.
 struct TestData {
+    //! Constructor.
     TestData() : m_cmdPacket{LEN(m_cmdData), m_cmdData}, m_rspPacket{LEN(m_rspData), m_rspData} {}
 
     uint8_t m_cmdData[16];        //!< Storage for command packet data.

@@ -23,12 +23,24 @@ class CorePacketHandler : public IPacketHandler {
  public:
     //! Commands accepted by the Core packet handler.
     struct Command : public Packet::Command {
-        static constexpr Type PING = 0x01;  //!< Check to see if the board is aliave.
+        static constexpr Type PING = 0x01;   //!< Check to see if the board is aliave.
+        static constexpr Type DEBUG = 0x02;  //!< Sets debug setting
     };
+
+    //! Flags passed to DEBUG message.
+    //! Currently just a 0/1 but could become a bit mask.
+    using DebugFlags = uint32_t;
 
     bool handlePacket(Packet const& cmd, Packet* rsp) override;
 
     char const* as_str(Packet::Command::Type cmd) const override;
+
+ protected:
+    //! Handles DEBUG command
+    void handleDebug(
+        Packet const& cmd,  //!< [in] Ping packet.
+        Packet* rsp         //!< [in] Place to store ping response.
+    );
 
     //! Handles PING command
     void handlePing(

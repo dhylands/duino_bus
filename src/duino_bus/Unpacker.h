@@ -27,18 +27,21 @@ class Unpacker {
     Unpacker();
 
     //! Constructor.
-    explicit Unpacker(Packet const& packet  //!< [in] Packet to unpack.
+    explicit Unpacker(
+        Packet const& packet  //!< [in] Packet to unpack.
     );
 
     //! Sets the data from a packet.
-    void setData(Packet const& packet  //!< [in] Packet data to unpack.
+    void setData(
+        Packet const& packet  //!< [in] Packet data to unpack.
     );
 
     //! Unpack a simple type.
     //! @tparam T type of value to unpack.
     //! @returns true if the data was unpacked successfully, false otherwise.
     template <typename T>
-    bool unpack(T* data  //!< [out] Place to store extracted data.
+    bool unpack(
+        T* data  //!< [out] Place to store extracted data.
     ) {
         // Produce an error if somebody tries to pass a pointer.
         static_assert(!std::is_pointer_v<T>);
@@ -65,7 +68,8 @@ class Unpacker {
     //! This function wil populate str to point to the string inside the packet.
     //! The caller should copy the data out, if required.
     //! @returns true if the string was unpacked successfully, false otherwise.
-    bool unpack(char const** str  //!< [out] Place to store extracted string.
+    bool unpack(
+        char const** str  //!< [out] Place to store extracted string.
     );
 
  private:

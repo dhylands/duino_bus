@@ -45,6 +45,7 @@ Packet::Error IBus::writePacket(Packet* packet) {
 }
 
 void IBus::add(IPacketHandler& handler) {
+    handler.setBus(this);
     this->m_handlers.push_back(&handler);
 }
 

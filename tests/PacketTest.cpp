@@ -16,11 +16,11 @@
 
 #include <gtest/gtest.h>
 
-#include "AsciiHex.h"
-#include "Crc8.h"
-#include "DumpMem.h"
-#include "PacketDecoder.h"
-#include "Util.h"
+#include "duino_log/DumpMem.h"
+#include "duino_bus/PacketDecoder.h"
+#include "duino_util/AsciiHex.h"
+#include "duino_util/Crc8.h"
+#include "duino_util/Util.h"
 
 //! Convenience alias.
 //!@{

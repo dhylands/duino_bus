@@ -51,8 +51,9 @@ class Packet {
     //! @details We use a struct rather than an enum so that a device can derive their own commands.
     struct Command : Bits<uint8_t> {
         //! Constructor.
-        Command(Type cmd  //!< [in] Command.
-                )
+        Command(
+            Type cmd  //!< [in] Command.
+            )
             : Bits(cmd) {}
 
         static constexpr Type PING = 0x01;  //!< Checks to see if the device is alive
@@ -77,7 +78,8 @@ class Packet {
     );
 
     //! Dumps the contents of a packet.
-    void dump(char const* label  //!< [in] Label to print on each line.
+    void dump(
+        char const* label  //!< [in] Label to print on each line.
     ) const;
 
     //! Returns the command from the command packet.
@@ -85,13 +87,15 @@ class Packet {
     Command::Type getCommand() const { return this->m_command.value; }
 
     //! Sets the command for the packet using a Command object.
-    void setCommand(Command cmd  //!< [in] Command object to set command from..
+    void setCommand(
+        Command cmd  //!< [in] Command object to set command from..
     ) {
         this->m_command.value = cmd.value;
     }
 
     //! Sets the command for the packet using a CommandType.
-    void setCommand(Command::Type cmd  //!< [in] Command to set command to.
+    void setCommand(
+        Command::Type cmd  //!< [in] Command to set command to.
     ) {
         this->m_command.value = cmd;
     }
@@ -138,17 +142,20 @@ class Packet {
     );
 
     //! Appends a byte to the packet.
-    void appendByte(uint8_t byte  //!< Byte to append.
+    void appendByte(
+        uint8_t byte  //!< Byte to append.
     );
 
     //! Append a string to the packet.
-    void append(char const* str  //!< [in] String to append.
+    void append(
+        char const* str  //!< [in] String to append.
     );
 
     //! Appends data to the packet.
     //! @tparam T type of the data to append.
     template <typename T>
-    void append(T data  //!< [in] Data to append.
+    void append(
+        T data  //!< [in] Data to append.
     ) {
         // Produce an error if somebody tries to pass a pointer.
         static_assert(!std::is_pointer_v<T>);
@@ -188,5 +195,6 @@ class Packet {
 
 //! Returns a string version of the error code.
 //! @returns A pointer to a literal string.
-char const* as_str(Packet::Error err  //!< [in] Error code to convert to a string.
+char const* as_str(
+    Packet::Error err  //!< [in] Error code to convert to a string.
 );

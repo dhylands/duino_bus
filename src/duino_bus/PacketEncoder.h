@@ -31,17 +31,20 @@ class PacketEncoderTest_BadStateTest_Test;
 class PacketEncoder {
  public:
     //! Resets the encoder to start encoding a packet.
-    void encodeStart(Packet* packet  //!< [in/out] Packet to encode (CRC is modified)
+    void encodeStart(
+        Packet* packet  //!< [in/out] Packet to encode (CRC is modified)
     );
 
     //! Encodes the next byte of the packet.
     //! @returns Error::NONE if the packet encoding has been completed.
     //! @returns Error::NOT_DONE if packet encoding is incomplete.
-    Packet::Error encodeByte(uint8_t* byte  //!< [out] Place to store the next encoded byte.
+    Packet::Error encodeByte(
+        uint8_t* byte  //!< [out] Place to store the next encoded byte.
     );
 
     //! Sets the debug flag which controls whether decoded packets get dumped.
-    void setDebug(bool debug  //!< [in] Value to set debug flag to.
+    void setDebug(
+        bool debug  //!< [in] Value to set debug flag to.
     ) {
         this->m_debug = debug;
     }

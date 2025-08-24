@@ -26,6 +26,7 @@ class SerialBus(IBus):
         self.rx_buf_len = 0
 
     def is_open(self) -> bool:
+        """Returns true if the serial bus is open."""
         return self.serial is not None
 
     def open(self, *args, **kwargs) -> int:

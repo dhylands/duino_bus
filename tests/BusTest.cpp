@@ -16,14 +16,14 @@
 
 #include <gtest/gtest.h>
 
-#include "AsciiHex.h"
-#include "Bus.h"
-#include "Crc8.h"
-#include "DumpMem.h"
-#include "Packet.h"
-#include "PacketDecoder.h"
-#include "PacketHandler.h"
-#include "Util.h"
+#include "duino_bus/Bus.h"
+#include "duino_bus/Packet.h"
+#include "duino_bus/PacketDecoder.h"
+#include "duino_bus/PacketHandler.h"
+#include "duino_log/DumpMem.h"
+#include "duino_util/AsciiHex.h"
+#include "duino_util/Crc8.h"
+#include "duino_util/Util.h"
 
 //! Convenience alias.
 //!@{
@@ -87,6 +87,7 @@ class TestHandler : public IPacketHandler {
 //! Helper class used for tests.
 class BusTest {
  public:
+    //! Constructor.
     BusTest()
         : m_cmdPacket{LEN(this->m_cmdPacketData), this->m_cmdPacketData},
           m_rspPacket{LEN(this->m_rspPacketData), this->m_rspPacketData},
@@ -110,7 +111,8 @@ class BusTest {
 
     //! Exercises the IBus::writePacket function.
     //! Converts the string into a packet, writes it, and confirms it wrote the same packet.
-    void writePacket(char const* str  //!< [in] ASCII Hex bytes representing the packet.
+    void writePacket(
+        char const* str  //!< [in] ASCII Hex bytes representing the packet.
     ) {
         ByteBuffer expectedData = AsciiHexToBinary(str);
         this->processBytes(str, Error::NONE);

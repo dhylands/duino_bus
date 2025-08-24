@@ -31,7 +31,7 @@
 #include <memory>
 
 #include "duino_log/Log.h"
-#include "ScopeGuard.h"
+#include "duino_util/ScopeGuard.h"
 
 SocketBus::SocketBus(Packet* cmdPacket, Packet* rspPacket) : IBus{cmdPacket, rspPacket} {}
 

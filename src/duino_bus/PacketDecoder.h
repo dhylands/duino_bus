@@ -31,7 +31,8 @@ class PacketDecoderTest_BadStateTest_Test;
 class PacketDecoder {
  public:
     //! Constructor
-    explicit PacketDecoder(Packet* pkt  //!< [out] Place to store decoded packet.
+    explicit PacketDecoder(
+        Packet* pkt  //!< [out] Place to store decoded packet.
     );
 
     //! Runs a single byte through the packet decoder state machine.
@@ -39,11 +40,13 @@ class PacketDecoder {
     //! @returns Error::NOT_DONE if the packet is incomplete.
     //! @returns Error::CRC if a CRC error was encountered.
     //! @returns Error::TOO_MUCH_DATA if the data doesn't fit into the packet data.
-    Packet::Error decodeByte(uint8_t byte  //!< [in] Byte to parse.
+    Packet::Error decodeByte(
+        uint8_t byte  //!< [in] Byte to parse.
     );
 
     //! Sets the debug flag which controls whether decoded packets get dumped.
-    void setDebug(bool debug  //!< [in] Value to set debug flag to.
+    void setDebug(
+        bool debug  //!< [in] Value to set debug flag to.
     ) {
         this->m_debug = debug;
     }

@@ -55,7 +55,8 @@ class SocketBus : public IBus {
 
     //! Sets up a server.
     //! @returns Error::NONE if the server was setup successfully, or an error code otherwise.
-    Error setupServer(char const* portStr  //!< [in] Port (as a string) to serve.
+    Error setupServer(
+        char const* portStr  //!< [in] Port (as a string) to serve.
     );
 
     //! Attempts to connect to a server.

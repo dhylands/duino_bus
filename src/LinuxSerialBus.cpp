@@ -16,7 +16,7 @@
 
 #if !defined(ARDUINO)
 
-#include "LinuxSerialBus.h"
+#include "duino_bus/LinuxSerialBus.h"
 
 #include <fcntl.h>
 #include <poll.h>

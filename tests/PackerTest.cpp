@@ -16,22 +16,24 @@
 
 #include <gtest/gtest.h>
 
-#include "AsciiHex.h"
-#include "DumpMem.h"
-#include "Packer.h"
-#include "Packet.h"
-#include "Util.h"
+#include "duino_log/DumpMem.h"
+#include "duino_bus/Packer.h"
+#include "duino_bus/Packet.h"
+#include "duino_util/AsciiHex.h"
+#include "duino_util/Util.h"
 
 //! Helper class for Packer tests.
 class PackerTest {
  public:
+    //! Constructor.
     PackerTest()
         : m_packet(LEN(this->m_packetData), this->m_packetData), m_packer(&this->m_packet) {}
 
     //! Tests if the packet data matches the given ascii hex data.
     //! @returns true if the packet data matches, false otherwise.
-    bool matches(char const* expectedAsciiHexData  //!< [in] ASCII Hex data that should match the
-                                                   //!< encoded packet.
+    bool matches(
+        char const* expectedAsciiHexData  //!< [in] ASCII Hex data that should match the
+                                          //!< encoded packet.
     ) {
         auto expectedData = AsciiHexToBinary(expectedAsciiHexData);
         if (expectedData.size() != this->m_packet.getDataLength() ||

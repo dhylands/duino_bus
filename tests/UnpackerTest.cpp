@@ -16,17 +16,18 @@
 
 #include <gtest/gtest.h>
 
-#include "AsciiHex.h"
-#include "Packet.h"
-#include "Unpacker.h"
-#include "Util.h"
+#include "duino_bus/Packet.h"
+#include "duino_bus/Unpacker.h"
+#include "duino_util/AsciiHex.h"
+#include "duino_util/Util.h"
 
 //! Helper class for Unpacker tests.
 class UnpackerTest {
  public:
     //! Constructor.
-    explicit UnpackerTest(char const* str  //!< [in] ASCII Hex data to store in packet.
-                          )
+    explicit UnpackerTest(
+        char const* str  //!< [in] ASCII Hex data to store in packet.
+        )
         : m_hexData{AsciiHexToBinary(str)}, m_packet(LEN(this->m_packetData), this->m_packetData) {
         this->m_packet.appendData(this->m_hexData.size(), this->m_hexData.data());
         this->m_unpacker.setData(this->m_packet);
