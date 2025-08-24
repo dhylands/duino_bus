@@ -21,11 +21,14 @@ class SerialBus(IBus):
 
     def __init__(self):
         super().__init__()
-        self.serial = None
+        self.serial = serial.Serial()
         self.baud = 0
         self.rx_buf_len = 0
 
-    def open(self, *args, **kwargs) -> ErrorCode:
+    def is_open(self) -> bool:
+        return self.serial is not None
+
+    def open(self, *args, **kwargs) -> int:
         """Tries to open the indicated serial port."""
         # Ensure that a reasonable timeout is set
         timeout = kwargs.get('timeout', 0.1)
@@ -37,6 +40,7 @@ class SerialBus(IBus):
         kwargs['xonxoff'] = False
         kwargs['rtscts'] = False
         kwargs['dsrdtr'] = False
+        print('Assigning self.serial')
         self.serial = serial.Serial(*args, **kwargs)
         return ErrorCode.NONE
 

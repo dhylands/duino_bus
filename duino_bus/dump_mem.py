@@ -34,7 +34,7 @@ def dump_mem(buf, prefix='', addr=0, line_width=16, show_ascii=True, show_addr=T
     buf_len = len(buf)
     # Use a memoryview to prevent unnecessary allocations
     buf_mv = memoryview(buf)
-    line_ascii = ''
+    line_ascii = bytearray(0)
     ascii_offset = 0
 
     prefix_bytes = bytes(prefix, 'utf-8')
