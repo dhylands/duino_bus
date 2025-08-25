@@ -21,6 +21,8 @@
 
 #include "duino_util/Util.h"
 
+class IBus;
+
 //! Encapsulates the packet sent to a devices.
 class Packet {
  public:
@@ -55,20 +57,6 @@ class Packet {
             Type cmd  //!< [in] Command.
             )
             : Bits(cmd) {}
-
-        static constexpr Type PING = 0x01;  //!< Checks to see if the device is alive
-
-        //! @brief Returns the string version of a command.
-        //! @details By making this virtual, derived classes can add custom commands and also
-        //!          return the string equivalents.
-        //! @returns A pointer to a C string containing the string equivalent of the command.
-        virtual const char* as_str() {
-            switch (this->value) {
-                case PING:
-                    return "PING";
-            }
-            return "???";
-        }
     };
 
     //! Constructor where the storage for parameter data is specified.
@@ -79,7 +67,8 @@ class Packet {
 
     //! Dumps the contents of a packet.
     void dump(
-        char const* label  //!< [in] Label to print on each line.
+        char const* label,         //!< [in] Label to print on each line.
+        IBus const* bus = nullptr  //!< [in] Bus the packet is associated with.
     ) const;
 
     //! Returns the command from the command packet.

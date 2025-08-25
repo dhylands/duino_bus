@@ -24,6 +24,7 @@
 
 //! Forward declaration.
 //@{
+class IBus;
 class PacketDecoderTest_BadStateTest_Test;
 //@}
 
@@ -31,8 +32,9 @@ class PacketDecoderTest_BadStateTest_Test;
 class PacketDecoder {
  public:
     //! Constructor
-    explicit PacketDecoder(
-        Packet* pkt  //!< [out] Place to store decoded packet.
+    PacketDecoder(
+        IBus const* bus,  //!< [in] Bus this decoder is associated with.
+        Packet* pkt       //!< [out] Place to store decoded packet.
     );
 
     //! Runs a single byte through the packet decoder state machine.
@@ -61,6 +63,7 @@ class PacketDecoder {
         DATA,     //!< Parsing the data.
     };
 
+    IBus const* m_bus;            //!< Bus this packet decoder is associated wiith
     Packet* m_packet;             //!< Packet being decoded.
     State m_state = State::IDLE;  //!< State of the parser.
     bool m_escape = false;        //!< Are we escaping a byte?

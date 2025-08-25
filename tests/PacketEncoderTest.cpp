@@ -16,6 +16,7 @@
 
 #include <gtest/gtest.h>
 
+#include "duino_bus/CorePacketHandler.h"
 #include "duino_log/DumpMem.h"
 #include "duino_bus/PacketEncoder.h"
 #include "duino_log/LinuxColorLog.h"
@@ -23,7 +24,7 @@
 #include "duino_util/Crc8.h"
 #include "duino_util/Util.h"
 
-using Command = Packet::Command;
+using Command = CorePacketHandler::Command;
 using Error = Packet::Error;
 
 //! Helper class for creating test cases.
@@ -35,7 +36,9 @@ class PacketEncoderTest {
         char const* str,    //!< [in] ASCII Hex version of packet data.
         bool debug = false  //!< [in] Enable debug?
         )
-        : m_data(AsciiHexToBinary(str)), m_packet{LEN(this->m_packetData), this->m_packetData} {
+        : m_data(AsciiHexToBinary(str)),
+          m_packet{LEN(this->m_packetData), this->m_packetData},
+          m_encoder(nullptr) {
         this->m_packet.setCommand(cmd);
         this->m_packet.setData(this->m_data.size(), this->m_data.data());
         this->m_encodedData.clear();

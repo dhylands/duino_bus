@@ -31,7 +31,7 @@ void PacketEncoder::encodeStart(Packet* packet) {
     this->m_packet = packet;
 
     if (this->m_debug) {
-        this->m_packet->dump("Sent");
+        this->m_packet->dump("Sent", this->m_bus);
     }
 
     this->m_state = State::IDLE;

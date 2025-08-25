@@ -21,6 +21,7 @@
 #include <cinttypes>
 #include <memory>
 
+#include "duino_bus/Bus.h"
 #include "duino_log/Log.h"
 #include "duino_log/DumpMem.h"
 #include "duino_util/Crc8.h"
@@ -50,11 +51,12 @@ char const* as_str(Packet::Error err) {
 Packet::Packet(size_t maxDataLen, void* data)
     : m_command{0}, m_maxDataLen(maxDataLen), m_data{reinterpret_cast<uint8_t*>(data)} {}
 
-void Packet::dump(char const* label) const {
+void Packet::dump(char const* label, IBus const* bus) const {
     Command cmd{this->getCommand()};
+    char const* cmd_str = (bus == nullptr) ? "???" : bus->as_str(cmd.value);
     Log::info(
-        "%s: Command: 0x%02" PRIx8 " (%s) Len: %zu CRC: 0x%02" PRIx8, label, cmd.value,
-        cmd.as_str(), this->getDataLength(), this->getCrc());
+        "%s: Command: 0x%02" PRIx8 " (%s) Len: %zu CRC: 0x%02" PRIx8, label, cmd.value, cmd_str,
+        this->getDataLength(), this->getCrc());
     DumpMem(label, 0, this->m_data, this->getDataLength());
 }
 

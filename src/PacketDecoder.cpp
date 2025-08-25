@@ -21,11 +21,12 @@
 #include <cinttypes>
 #include <memory>
 
+#include "duino_bus/Bus.h"
 #include "duino_log/DumpMem.h"
 #include "duino_log/Log.h"
 #include "duino_util/Crc8.h"
 
-PacketDecoder::PacketDecoder(Packet* pkt) : m_packet{pkt} {}
+PacketDecoder::PacketDecoder(IBus const* bus, Packet* pkt) : m_bus{bus}, m_packet{pkt} {}
 
 Packet::Error PacketDecoder::decodeByte(uint8_t byte) {
     // Since we need to escape for multiple states, it's easier to put
@@ -81,7 +82,7 @@ Packet::Error PacketDecoder::decodeByte(uint8_t byte) {
                 if (rcvdCrc == expectedCrc) {
                     this->m_state = State::IDLE;
                     if (this->m_debug) {
-                        this->m_packet->dump("Rcvd");
+                        this->m_packet->dump("Rcvd", this->m_bus);
                     }
                     return Packet::Error::NONE;
                 }
@@ -89,7 +90,7 @@ Packet::Error PacketDecoder::decodeByte(uint8_t byte) {
                     "CRC Error: Received 0x%02" PRIx8 " Expected 0x%02" PRIx8, rcvdCrc,
                     expectedCrc);
                 if (this->m_debug) {
-                    this->m_packet->dump("CRC ");
+                    this->m_packet->dump("CRC ", this->m_bus);
                 }
                 return Packet::Error::CRC;
             }
@@ -98,7 +99,7 @@ Packet::Error PacketDecoder::decodeByte(uint8_t byte) {
             if (this->m_packet->getDataLength() >= this->m_packet->getMaxDataLength()) {
                 // Not enough room to store any more bytes.
                 if (this->m_debug) {
-                    this->m_packet->dump("2Big");
+                    this->m_packet->dump("2Big", this->m_bus);
                 }
                 return Packet::Error::TOO_MUCH_DATA;
             }

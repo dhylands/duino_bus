@@ -22,7 +22,8 @@ IBus::IBus(
     Packet* cmdPacket,  //!< [mod] Place to store the command packet.
     Packet* rspPacket   //!< [mod] Place to store the response packet.
     )
-    : m_cmdPacket{cmdPacket}, m_rspPacket{rspPacket}, m_decoder{cmdPacket} {};
+    : m_cmdPacket{cmdPacket}, m_rspPacket{rspPacket}, m_decoder{this, cmdPacket}, m_encoder{this} {
+      };
 
 Packet::Error IBus::processByte() {
     uint8_t byte;
@@ -62,4 +63,14 @@ bool IBus::handlePacket() {
     }
     Log::error("Unhandled command: 0x%02" PRIx8, this->m_cmdPacket->getCommand());
     return false;
+}
+
+char const* IBus::as_str(Packet::Command::Type cmd) const {
+    for (auto handler : this->m_handlers) {
+        auto str = handler->as_str(cmd);
+        if (str != nullptr && *str != '?') {
+            return str;
+        }
+    }
+    return "???";
 }

@@ -36,9 +36,9 @@ struct TestData {
 
 TEST(CorePacketHandlerTest, PingTest) {
     TestData test;
-    test.m_cmdPacket.setCommand(Command::PING);
+    test.m_cmdPacket.setCommand(CorePacketHandler::Command::PING);
     EXPECT_EQ(test.m_handler.handlePacket(test.m_cmdPacket, &test.m_rspPacket), true);
-    EXPECT_EQ(test.m_rspPacket.getCommand(), Command::PING);
+    EXPECT_EQ(test.m_rspPacket.getCommand(), CorePacketHandler::Command::PING);
     EXPECT_EQ(test.m_rspPacket.getDataLength(), 0);
 }
 

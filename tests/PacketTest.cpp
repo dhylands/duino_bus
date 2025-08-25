@@ -16,6 +16,7 @@
 
 #include <gtest/gtest.h>
 
+#include "duino_bus/CorePacketHandler.h"
 #include "duino_log/DumpMem.h"
 #include "duino_bus/PacketDecoder.h"
 #include "duino_util/AsciiHex.h"
@@ -24,7 +25,7 @@
 
 //! Convenience alias.
 //!@{
-using Command = Packet::Command;
+using Command = CorePacketHandler::Command;
 using Error = Packet::Error;
 //!@}
 

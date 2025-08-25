@@ -91,6 +91,11 @@ class IBus {
     //! @returns true if the packet was handled, false otherwise.
     bool handlePacket();
 
+    //! @return returns a string version of a command.
+    char const* as_str(
+        Packet::Command::Type cmd  //!< [in] Command to translater
+    ) const;
+
  protected:
     Packet* m_cmdPacket;                      //!< Place to store the incoming command packet.
     Packet* m_rspPacket;                      //!< Place to store the outcoming response packet.

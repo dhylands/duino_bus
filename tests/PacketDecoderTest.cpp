@@ -16,6 +16,7 @@
 
 #include <gtest/gtest.h>
 
+#include "duino_bus/CorePacketHandler.h"
 #include "duino_log/DumpMem.h"
 #include "duino_bus/PacketDecoder.h"
 #include "duino_util/AsciiHex.h"
@@ -24,7 +25,7 @@
 
 //! Convenience alias.
 //!@{
-using Command = Packet::Command;
+using Command = CorePacketHandler::Command;
 using Error = Packet::Error;
 //!@}
 
@@ -37,7 +38,7 @@ class PacketDecoderTest {
         )
         : m_data(AsciiHexToBinary(str)),
           m_packet{LEN(this->m_packetData), this->m_packetData},
-          m_decoder(&this->m_packet) {}
+          m_decoder(nullptr, &this->m_packet) {}
 
     //! Parses all of the bytes from m_dataStream using the packet parser.
     //! @returns Error::NONE if a packet was parsed successfully.

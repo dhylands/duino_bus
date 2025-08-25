@@ -24,12 +24,19 @@
 
 //! Forward declaration.
 //@{
+class IBus;
 class PacketEncoderTest_BadStateTest_Test;
 //@}
 
 //! Code for encoding a packet into its raw byte stream.
 class PacketEncoder {
  public:
+    //! Constructor
+    PacketEncoder(
+        IBus const* bus = nullptr  //!< [in] Bus this encoder is associated with.
+        )
+        : m_bus{bus} {}
+
     //! Resets the encoder to start encoding a packet.
     void encodeStart(
         Packet* packet  //!< [in/out] Packet to encode (CRC is modified)
@@ -62,6 +69,7 @@ class PacketEncoder {
 
     State handleEscape(uint8_t* byte);
 
+    IBus const* m_bus;                 //!< Bus this packet encoder is associated wiith
     Packet const* m_packet = nullptr;  //!< Packet being encoded.
     State m_state = State::IDLE;       //!< State of the parser.
     size_t m_encodeIdx = 0;            //!< Data byte being encoded.
