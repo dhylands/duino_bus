@@ -33,8 +33,10 @@ class IBus {
 
     //! Constructor.
     explicit IBus(
-        Packet* cmdPacket,  //!< [mod] Place to store the command packet.
-        Packet* rspPacket   //!< [mod] Place to store the response packet.
+        Packet* cmdPacket,            //!< [mod] Place to store the command packet.
+        Packet* rspPacket,            //!< [mod] Place to store the response packet.
+        Packet* logPacket = nullptr,  //!< [mod] Place to store outgoing log packet.
+        Packet* evtPacket = nullptr   //!< [mod] Place to store outgoinf event packet.
     );
 
     //! Destructor.
@@ -74,6 +76,12 @@ class IBus {
         Packet* packet  //!< [in] Packet to write.
     );
 
+    //! @returns a poiinter to the log packet that was passed into the constructor.
+    Packet* getLogPacket() { return this->m_logPacket; }
+
+    //! @returns a poiinter to the event packet that was passed into the constructor.
+    Packet* getEventPacket() { return this->m_evtPacket; }
+
     //! Sets the debug flag which controls whether decoded packets get dumped.
     void setDebug(
         bool debug  //!< [in] Value to set debug flag to.
@@ -99,6 +107,8 @@ class IBus {
  protected:
     Packet* m_cmdPacket;                      //!< Place to store the incoming command packet.
     Packet* m_rspPacket;                      //!< Place to store the outcoming response packet.
+    Packet* m_logPacket;                      //!< Place to store the outgoing log packet.
+    Packet* m_evtPacket;                      //!< Place to store the outgoing event packet.
     PacketDecoder m_decoder;                  //!< Used to decode incoming packets.
     PacketEncoder m_encoder;                  //!< Used to encode outgoing packets.
     std::vector<IPacketHandler*> m_handlers;  //!< Registered packet handlers.

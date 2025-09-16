@@ -24,6 +24,15 @@ class SocketBus(IBus):
         super().__init__()
         self.socket: Union[None, socket.socket] = socket.socket()
 
+    def is_open(self) -> bool:
+        """Returns true if the socket bus is open."""
+        return self.socket is not None
+
+    def close(self) -> None:
+        """Closes a previously opened socket."""
+        if self.socket is not None:
+            self.socket.close()
+
     def print_addr_info(self, label: str, info: Tuple) -> None:
         """Prints information from a single info entry returned by getaddrinfo."""
         # The info tuple looks like (family, type, proto, canonname, sockaddr)
@@ -115,11 +124,12 @@ class SocketBus(IBus):
             return data[0]
         return None
 
-    def write_byte(self, byte: int) -> None:
+    def write_byte(self, byte: int) -> bool:
         """Writes a byte to the bus."""
         if self.socket is None:
             raise ValueError('Attempting I/O operation on a closed socket')
         self.socket.send(byte.to_bytes(1, 'little'))
+        return True
 
 
 # pylint: disable=duplicate-code

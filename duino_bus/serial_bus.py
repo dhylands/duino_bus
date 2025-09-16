@@ -9,6 +9,7 @@ import time
 from typing import Union
 
 import serial
+import serial.serialutil
 
 from duino_bus.bus import IBus
 from duino_bus.packet import ErrorCode, Packet
@@ -41,12 +42,24 @@ class SerialBus(IBus):
         kwargs['xonxoff'] = False
         kwargs['rtscts'] = False
         kwargs['dsrdtr'] = False
-        print('Assigning self.serial')
+        kwargs['write_timeout'] = 0.1
         self.serial = serial.Serial(*args, **kwargs)
+        self.bus_opened(self.serial.fileno())
         return ErrorCode.NONE
+
+    def close(self) -> None:
+        """Closes a previously opened serial port."""
+        if self.serial is not None:
+            self.serial.reset_input_buffer()
+            self.serial.reset_output_buffer()
+            self.serial.close()
+            self.serial = None
+            self.bus_closed()
 
     def is_data_available(self) -> bool:
         """Returns True if data is available, False otherwise."""
+        if self.serial is None:
+            return False
         poll = select.poll()
         poll.register(self.serial, select.POLLIN)
         events = poll.poll(0)
@@ -54,6 +67,8 @@ class SerialBus(IBus):
 
     def is_space_available(self) -> bool:
         """Returns Trus if space is available to write another byte, False otherwise."""
+        if self.serial is None:
+            return False
         poll = select.poll()
         poll.register(self.serial, select.POLLOUT)
         events = poll.poll(0)
@@ -63,14 +78,22 @@ class SerialBus(IBus):
         """Reads a byte from the bus. This function is non-blocking.
            Returns None if no character was available to be read, or the character.
         """
+        if self.serial is None:
+            return None
         data = self.serial.read(1)
         if data:
             return data[0]
         return None
 
-    def write_byte(self, byte: int) -> None:
+    def write_byte(self, byte: int) -> bool:
         """Writes a byte to the bus."""
-        self.serial.write(byte.to_bytes(1, 'little'))
+        if self.serial is None:
+            return False
+        try:
+            self.serial.write(byte.to_bytes(1, 'little'))
+        except serial.serialutil.SerialTimeoutException:
+            return False
+        return True
 
 
 if __name__ == '__main__':

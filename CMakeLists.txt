@@ -1,5 +1,6 @@
 add_library(duino_bus STATIC
     src/Bus.cpp
+src/BusLog.cpp
     src/CorePacketHandler.cpp
     src/Packer.cpp
     src/Packet.cpp

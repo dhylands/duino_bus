@@ -57,6 +57,15 @@ class Packet {
             Type cmd  //!< [in] Command.
             )
             : Bits(cmd) {}
+
+        //! Base used for assigning CORE commands.
+        static constexpr Type CORE_COMMAND_BASE = 0x00;
+
+        //! Base used for assigning LITTLEFS commands.
+        static constexpr Type LITTLEFS_COMMAND_BASE = 0x40;
+
+        //! Base used for assigning Hw-Tester commands.
+        static constexpr Type HWTESTER_COMMAND_BASE = 0x80;
     };
 
     //! Constructor where the storage for parameter data is specified.
@@ -161,6 +170,13 @@ class Packet {
 
     //! Calculates the CRC of the data and saves it in the packet.
     void calcAndStoreCrc();
+
+    //! Removes the last byte of the packet.
+    void removeByte() {
+        if (this->m_dataLen > 0) {
+            this->m_dataLen--;
+        }
+    }
 
  private:
     friend class PacketDecoder;

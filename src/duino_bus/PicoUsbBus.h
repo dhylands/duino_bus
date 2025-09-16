@@ -27,7 +27,9 @@ class PicoUsbBus : public IBus {
     PicoUsbBus(
         uint8_t intf,       //!< [in] USB Interface to use.
         Packet* cmdPacket,  //!< [in] Place to store command packet
-        Packet* rspPacket   //!< [in] Place to store response packet
+        Packet* rspPacket,  //!< [in] Place to store response packet
+        Packet* logPacket,  //!< [mod] Place to store outgoing log packet.
+        Packet* evtPacket   //!< [mod] Place to store outgoinf event packet.
     );
 
     //! Destructor.

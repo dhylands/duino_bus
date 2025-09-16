@@ -18,8 +18,13 @@
 
 #include "tusb.h"
 
-PicoUsbBus::PicoUsbBus(uint8_t intf, Packet* cmdPacket, Packet* rspPacket)
-    : IBus{cmdPacket, rspPacket}, m_intf{intf} {}
+PicoUsbBus::PicoUsbBus(
+    uint8_t intf,
+    Packet* cmdPacket,
+    Packet* rspPacket,
+    Packet* logPacket,
+    Packet* evtPacket)
+    : IBus{cmdPacket, rspPacket, logPacket, evtPacket}, m_intf{intf} {}
 
 PicoUsbBus::~PicoUsbBus() {}
 

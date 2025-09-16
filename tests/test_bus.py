@@ -14,12 +14,17 @@ from duino_bus.packet import ErrorCode, Packet
 # Note: If the class name starts with Test then pytest thinks it's a test class
 #       which is why we use `TstBus` instead.
 class TstBus(IBus):
+    """Test Bus - mocks the bus for testing."""
 
     def __init__(self, data_str: str) -> None:
         super().__init__()
         self.cmd_idx = 0
         self.cmd_data = binascii.unhexlify(data_str.replace(' ', ''))
         self.rsp_data = bytearray(0)
+
+    def is_open(self) -> bool:
+        """Returns True if the bus has been opened."""
+        return True
 
     def read_byte(self) -> Union[int, None]:
         """Reads a byte from the bus. This function is non-blocking.
@@ -31,11 +36,20 @@ class TstBus(IBus):
             return byte
         return None
 
-    def write_byte(self, byte: int) -> None:
+    def is_data_available(self) -> bool:
+        """Returns True if data is available, False otherwise."""
+        return self.cmd_idx < len(self.cmd_data)
+
+    def write_byte(self, byte: int) -> bool:
         """Writes a byte to the bus."""
         self.rsp_data.append(byte)
+        return True
+
+    def is_space_available(self) -> bool:
+        return True
 
     def as_str(self, data) -> str:
+        """Formats some data into human readable form."""
         return binascii.hexlify(data, ' ').decode('utf-8')
 
 

@@ -28,7 +28,7 @@ class PacketDecoder:
         """Sets the debug flag which controls whether decoded packets get dumped."""
         self.debug = debug
 
-    def decode_byte(self, byte: int) -> ErrorCode:
+    def decode_byte(self, byte: int) -> int:
         """Runs a single byte through the packet decoder state machine."""
         # Since we need to escape for multiple states, it's easier to put
         # the escape logic here.
@@ -56,13 +56,13 @@ class PacketDecoder:
 
         return ErrorCode.BAD_STATE
 
-    def decode_byte_idle(self, byte: int) -> ErrorCode:
+    def decode_byte_idle(self, byte: int) -> int:
         """Handles the IDLE state."""
         if byte == Packet.END:
             self.state = PacketDecoder.STATE_COMMAND
         return ErrorCode.NOT_DONE
 
-    def decode_byte_command(self, byte: int) -> ErrorCode:
+    def decode_byte_command(self, byte: int) -> int:
         """Handles the COMMAND state."""
         if byte == Packet.END and not self.escape:
             # A regular END marks the beginning/end of a packet
@@ -75,7 +75,7 @@ class PacketDecoder:
         self.state = PacketDecoder.STATE_DATA
         return ErrorCode.NOT_DONE
 
-    def decode_byte_data(self, byte: int) -> ErrorCode:
+    def decode_byte_data(self, byte: int) -> int:
         """Handles the DATA state."""
         if byte == Packet.END and not self.escape:
             self.state = PacketDecoder.STATE_IDLE

@@ -7,7 +7,10 @@ import crcmod
 
 from duino_bus.dump_mem import dump_mem
 
-ERROR_STRS = ['NONE', 'NOT_DONE', 'CRC', 'TIMEOUT', 'TOO_MUCH_DATA', 'TOO_SMALL', 'BAD_STATE', 'OS']
+ERROR_STRS = [
+    'NONE', 'NOT_DONE', 'CRC', 'TIMEOUT', 'TOO_MUCH_DATA', 'TOO_SMALL', 'BAD_STATE', 'OS',
+    'NO_DEVICE', 'NOT_OPEN'
+]
 
 
 # pylint: disable=too-few-public-methods
@@ -21,6 +24,8 @@ class ErrorCode:
     TOO_SMALL = 5  # Not enough data for a packet
     BAD_STATE = 6  # Bad parsing state
     OS = 7  # OS error
+    NO_DEVICE = 8  # No device connected
+    NOT_OPEN = 9  # No device open
 
     @staticmethod
     def as_str(err: int) -> str:
@@ -52,14 +57,9 @@ class Packet:
 
     CRC_FN = crcmod.predefined.mkCrcFun('crc-8')
 
-    def __init__(
-            self,
-            cmd: Union[int,
-                       None] = None,
-            data: Union[bytes,
-                        bytearray,
-                        None] = None
-    ) -> None:
+    def __init__(self,
+                 cmd: Union[int, None] = None,
+                 data: Union[bytes, bytearray, None] = None) -> None:
         """Constructs a packet from a buffer, if provided."""
         if cmd is None:
             cmd = 0
@@ -76,14 +76,12 @@ class Packet:
         """
         Dumps the contents of a packet.
         """
-        print(
-                f'{label} Command: 0x{self.cmd:02x} ({str(self.cmd)}) Len: {len(self.data)} '
-                f'CRC: 0x{self.crc:02x}'
-        )
+        print(f'{label} Command: 0x{self.cmd:02x} ({str(self.cmd)}) Len: {len(self.data)} '
+              f'CRC: 0x{self.crc:02x}')
         if len(self.data) > 0:
             dump_mem(self.data, label)
 
-    def get_command(self) -> Union[int, None]:
+    def get_command(self) -> int:
         """Returns the command from the packet."""
         return self.cmd
 

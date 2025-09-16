@@ -62,7 +62,9 @@ void Packet::dump(char const* label, IBus const* bus) const {
 
 void Packet::setData(size_t dataLen, void const* data) {
     this->m_dataLen = 0;
-    this->appendData(dataLen, data);
+    if (dataLen > 0) {
+        this->appendData(dataLen, data);
+    }
 }
 
 void Packet::appendByte(uint8_t byte) {

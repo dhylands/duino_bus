@@ -22,9 +22,11 @@ class TestPacket(unittest.TestCase):
         self.assertEqual(ErrorCode.as_str(ErrorCode.TOO_SMALL), 'TOO_SMALL')
         self.assertEqual(ErrorCode.as_str(ErrorCode.BAD_STATE), 'BAD_STATE')
         self.assertEqual(ErrorCode.as_str(ErrorCode.OS), 'OS')
+        self.assertEqual(ErrorCode.as_str(ErrorCode.NO_DEVICE), 'NO_DEVICE')
+        self.assertEqual(ErrorCode.as_str(ErrorCode.NOT_OPEN), 'NOT_OPEN')
         self.assertEqual(ErrorCode.as_str(255), '???')
 
-        self.assertEqual(len(ERROR_STRS), 8)
+        self.assertEqual(len(ERROR_STRS), 10)
 
     def test_set_data(self) -> None:
         pkt = Packet(0xcc)

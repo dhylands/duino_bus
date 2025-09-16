@@ -23,6 +23,8 @@ char const* CorePacketHandler::as_str(Packet::Command::Type cmd) const {
             return "PING";
         case Command::DEBUG:
             return "DEBUG";
+        case Command::LOG:
+            return "LOG";
     }
     return "???";
 }

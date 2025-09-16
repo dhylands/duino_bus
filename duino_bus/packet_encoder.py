@@ -45,7 +45,7 @@ class PacketEncoder:
             return (PacketEncoder.STATE_ESCAPE, Packet.ESC)
         return (PacketEncoder.STATE_DATA, byte)
 
-    def encode_byte(self) -> Tuple[ErrorCode, int]:
+    def encode_byte(self) -> Tuple[int, int]:
         """Encodes the next byte of the packet."""
         if self.state == PacketEncoder.STATE_IDLE:
             return self.encode_byte_idle()
@@ -61,18 +61,18 @@ class PacketEncoder:
 
         return (ErrorCode.BAD_STATE, 0)
 
-    def encode_byte_idle(self) -> Tuple[ErrorCode, int]:
+    def encode_byte_idle(self) -> Tuple[int, int]:
         """Handles the IDLE state of the encoder."""
         self.state = PacketEncoder.STATE_COMMAND
         return (ErrorCode.NOT_DONE, Packet.END)
 
-    def encode_byte_command(self) -> Tuple[ErrorCode, int]:
+    def encode_byte_command(self) -> Tuple[int, int]:
         """Handles the COMMAND state of the encoder."""
         self.state, byte = self.handle_escape(self.packet.get_command())
         self.encode_idx = 0
         return (ErrorCode.NOT_DONE, byte)
 
-    def encode_byte_data(self) -> Tuple[ErrorCode, int]:
+    def encode_byte_data(self) -> Tuple[int, int]:
         """Handles the DATA state of the encoder."""
         if self.encode_idx < self.packet.get_data_len():
             self.state, byte = self.handle_escape(self.packet.get_data_byte(self.encode_idx))
@@ -85,7 +85,7 @@ class PacketEncoder:
         self.state = PacketEncoder.STATE_IDLE
         return (ErrorCode.NONE, Packet.END)
 
-    def encode_byte_escape(self) -> Tuple[ErrorCode, int]:
+    def encode_byte_escape(self) -> Tuple[int, int]:
         """Handles the ESCAPE state of the encoder."""
         self.state = PacketEncoder.STATE_DATA
         return (ErrorCode.NOT_DONE, self.escape_char)

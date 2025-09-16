@@ -18,12 +18,13 @@
 #include "duino_bus/PacketHandler.h"
 #include "duino_log/Log.h"
 
-IBus::IBus(
-    Packet* cmdPacket,  //!< [mod] Place to store the command packet.
-    Packet* rspPacket   //!< [mod] Place to store the response packet.
-    )
-    : m_cmdPacket{cmdPacket}, m_rspPacket{rspPacket}, m_decoder{this, cmdPacket}, m_encoder{this} {
-      };
+IBus::IBus(Packet* cmdPacket, Packet* rspPacket, Packet* logPacket, Packet* evtPacket)
+    : m_cmdPacket{cmdPacket},
+      m_rspPacket{rspPacket},
+      m_logPacket{logPacket},
+      m_evtPacket{evtPacket},
+      m_decoder{this, cmdPacket},
+      m_encoder{this} {};
 
 Packet::Error IBus::processByte() {
     uint8_t byte;

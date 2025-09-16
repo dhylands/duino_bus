@@ -25,6 +25,7 @@ class CorePacketHandler : public IPacketHandler {
     struct Command : public Packet::Command {
         static constexpr Type PING = 0x01;   //!< Check to see if the board is aliave.
         static constexpr Type DEBUG = 0x02;  //!< Sets debug setting
+        static constexpr Type LOG = 0x03;    //!< Log message (to host)
     };
 
     //! Flags passed to DEBUG message.
