@@ -30,7 +30,7 @@ struct LogParam {
 
 size_t BusLog::log_char_to_packet(void* outParam, char ch) {
     LogParam* param = reinterpret_cast<LogParam*>(outParam);
-    if (param->pkt->getSpaceRemaining() > 0) {
+    if (param->pkt->getSpaceRemaining() > 1) {
         param->pkt->appendByte(ch);
         param->bytes_written++;
         return 1;
@@ -60,8 +60,9 @@ void BusLog::do_log(
         .bytes_written = 0,
     };
     size_t bytes_written = vStrXPrintf(BusLog::log_char_to_packet, &param, fmt, args);
+    log->appendByte(0);
 
-    *strLen = static_cast<uint8_t>(param.bytes_written);
+    *strLen = static_cast<uint8_t>(param.bytes_written + 1);
 
     this->m_bus->writePacket(log);
 }

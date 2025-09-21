@@ -23,9 +23,11 @@ class CorePacketHandler : public IPacketHandler {
  public:
     //! Commands accepted by the Core packet handler.
     struct Command : public Packet::Command {
-        static constexpr Type PING = 0x01;   //!< Check to see if the board is aliave.
-        static constexpr Type DEBUG = 0x02;  //!< Sets debug setting
-        static constexpr Type LOG = 0x03;    //!< Log message (to host)
+        static constexpr Type PING = 0x01;        //!< Check to see if the board is aliave.
+        static constexpr Type DEBUG = 0x02;       //!< Sets debug setting
+        static constexpr Type LOG = 0x03;         //!< Log message (to host)
+        static constexpr Type STACK_INFO = 0x04;  //!< Returns stack information.
+        static constexpr Type HEAP_INFO = 0x05;   //!< Returns heap information.
     };
 
     //! Flags passed to DEBUG message.
@@ -37,14 +39,40 @@ class CorePacketHandler : public IPacketHandler {
     char const* as_str(Packet::Command::Type cmd) const override;
 
  protected:
-    //! Handles DEBUG command
+    //! Handles DEBUG command.
     void handleDebug(
         Packet const& cmd,  //!< [in] Ping packet.
         Packet* rsp         //!< [in] Place to store ping response.
     );
 
-    //! Handles PING command
+    //! Handles the HEAP_INFO command.
+    //! Command:
+    //!     No Data
+    //! Response:
+    //!     uint32_t heapSize
+    //!     uint32_t heapAllocated
+    //!     uint32_t heapFree
+    //!     uint32_t heapLargestFree
+    //!     uint32_t heapGrowthPotential
+    void handleHeapInfo(
+        Packet const& cmd,  //!< [in] Ping packet.
+        Packet* rsp         //!< [in] Place to store ping response.
+    );
+
+    //! Handles PING command.
     void handlePing(
+        Packet const& cmd,  //!< [in] Ping packet.
+        Packet* rsp         //!< [in] Place to store ping response.
+    );
+
+    //! Handles the STACK_INFO command.
+    //! Command:
+    //!     No Data
+    //! Response:
+    //!     uint32_t stackSize
+    //!     uint32_t stackUsed
+    //!     uint32_t stackUnused
+    void handleStackInfo(
         Packet const& cmd,  //!< [in] Ping packet.
         Packet* rsp         //!< [in] Place to store ping response.
     );

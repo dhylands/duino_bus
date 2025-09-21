@@ -37,7 +37,10 @@ class Packer:
         self.data.extend(s)
 
     def pack_str(self, s: Union[str, bytes, bytearray]) -> None:
-        """Packs a string into the binary data."""
+        """Packs a string into the binary data.
+           Strings are encoded with an 8-bit length, the string data and a terminating null.
+           So the string "Test" would be encoded as: 05 54 65 73 74 00
+        """
         if isinstance(s, str):
             s = bytes(s, 'utf-8')
         self.pack_u8(len(s) + 1)

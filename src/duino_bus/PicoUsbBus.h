@@ -17,6 +17,9 @@
 #pragma once
 
 #include <cinttypes>
+#include <vector>
+
+#include "tusb.h"
 
 #include "duino_bus/Bus.h"
 
@@ -40,7 +43,10 @@ class PicoUsbBus : public IBus {
     bool isSpaceAvailable() const override;
     void writeByte(uint8_t byte) override;
     void flush(void) override;
+    bool isConnected(void) const override;
 
  private:
+    friend void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts);
+
     uint8_t const m_intf;  //!< USB Interface to use.
 };

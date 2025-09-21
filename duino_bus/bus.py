@@ -51,6 +51,9 @@ class IBus:
         self.thread = None
         self.recv_queue = queue.Queue()
 
+    def close(self) -> None:
+        """Closed a previously opened bus."""
+
     def bus_opened(self, fileno: int) -> None:
         """Called by the derived class when the bus object is opened.
         This function starts a thread which processes asynchronous incoming data

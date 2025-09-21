@@ -16,7 +16,16 @@
 
 #include "duino_bus/PicoUsbBus.h"
 
+#include <cassert>
+
 #include "tusb.h"
+
+#include "duino_util/Util.h"
+
+//! Array of connected flags, indexed by intf.
+//! We use a simple array rather than a vector since we can't control the order
+//! of initialization of global objects, and PicoUsbBus is declared globally.
+static bool g_isConnected[4];
 
 PicoUsbBus::PicoUsbBus(
     uint8_t intf,
@@ -27,6 +36,13 @@ PicoUsbBus::PicoUsbBus(
     : IBus{cmdPacket, rspPacket, logPacket, evtPacket}, m_intf{intf} {}
 
 PicoUsbBus::~PicoUsbBus() {}
+
+bool PicoUsbBus::isConnected() const {
+    if (this->m_intf < LEN(g_isConnected)) {
+        return g_isConnected[m_intf];
+    }
+    return false;
+}
 
 bool PicoUsbBus::isDataAvailable() const {
     return tud_cdc_n_available(this->m_intf) > 0;
@@ -42,9 +58,29 @@ bool PicoUsbBus::isSpaceAvailable() const {
 }
 
 void PicoUsbBus::writeByte(uint8_t byte) {
-    tud_cdc_n_write(this->m_intf, &byte, 1);
+    if (this->isConnected()) {
+        tud_cdc_n_write(this->m_intf, &byte, 1);
+    }
 }
 
 void PicoUsbBus::flush(void) {
-    tud_cdc_n_write_flush(this->m_intf);
+    if (this->isConnected()) {
+        tud_cdc_n_write_flush(this->m_intf);
+    }
+}
+
+//! tud_cdc_line_state_cb is a weak function from TinyUSB.
+//! It's called  in response to the SET_CONTROL_LINE_STATE CDC ACM message.
+//! We use it to detect when the host side serial port is opened, since it
+//! asserts the DTR line on open and deasserts on close.
+void tud_cdc_line_state_cb(
+    uint8_t intf,  //!< [in] Interface the SET_CONTROL_LINE_STATE msg is for.
+    bool dtr,      //!< [in] true =- assert DTR, false = deassert DTR
+    bool rts       //!< [in] true =- assert RTS, false = deassert RTS
+) {
+    (void)rts;
+    if (intf >= LEN(g_isConnected)) {
+        return;
+    }
+    g_isConnected[intf] = dtr;
 }

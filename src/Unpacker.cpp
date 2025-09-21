@@ -39,6 +39,9 @@ bool Unpacker::unpack(size_t numBytes, uint8_t const** data) {
 }
 
 bool Unpacker::unpack(char const** str) {
+    // Strings are encoded with an 8-bit length, the string data and a terminating null.
+    // So the string "Test" would be encoded as: 05 54 65 73 74 00
+
     // Get the length
     uint8_t strLength;
     if (!this->unpack(&strLength)) {

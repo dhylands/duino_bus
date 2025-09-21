@@ -63,6 +63,9 @@ class IBus {
     //! Flushes any buffered data out.
     virtual void flush(void) {}
 
+    //! @returns true if the "other" side of the bus is open.
+    virtual bool isConnected(void) const { return true; }
+
     //! Reads a byte from the bus, and runs it through the packet parser.
     //! @returns Error::NONE if the packet was parsed successfully.
     //! @returns Error::NOT_DONE if the packet is incomplete.

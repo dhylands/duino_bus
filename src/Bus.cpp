@@ -58,6 +58,8 @@ bool IBus::handlePacket() {
         if (handler->handlePacket(*this->m_cmdPacket, this->m_rspPacket)) {
             if (this->m_rspPacket->getCommand() != 0) {
                 this->writePacket(this->m_rspPacket);
+            } else if (this->m_rspPacket->getDataLength() > 0) {
+                Log::error("Packet data set, but no command");
             }
             return true;
         }

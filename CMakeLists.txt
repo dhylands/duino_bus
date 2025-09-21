@@ -1,6 +1,6 @@
 add_library(duino_bus STATIC
     src/Bus.cpp
-src/BusLog.cpp
+    src/BusLog.cpp
     src/CorePacketHandler.cpp
     src/Packer.cpp
     src/Packet.cpp
@@ -13,6 +13,7 @@ src/BusLog.cpp
 target_include_directories(duino_bus PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(duino_bus
     duino_log
+    duino_led
     duino_util
     pico_stdlib
 )
